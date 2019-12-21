@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,14 +39,16 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
-    AuthState authState;
-    AuthorizationServiceConfiguration serviceConfig;
-    private TextView username;
     public static final String TAG = "MAINNN";
+
+    private TextView username;
+    AuthState authState;
 
     private static final String SHARED_PREFERENCE = "BrickHack";
     private static final String AUTH_STATE = "AUTH_STATE";
     private static final String SERVICE_CONFIGURATION = "SERVICE_CONFIGURATION";
+    AuthorizationServiceConfiguration serviceConfig;
+    private Button scan_btn;
 
     // TODO: 2019-11-08 Create a test user 
 
@@ -54,10 +58,18 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         username = findViewById(R.id.username);
+        scan_btn = findViewById(R.id.scan);
         authState = restoreAuthState();
         serviceConfig = restoreServiceConfig();
 
         networkstuff();
+        scan_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
     }
 
     @Nullable
@@ -189,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
                     assert response.body() != null;
                     JsonElement first = response.body().getAsJsonObject().get("first_name");
                     // JsonElement last = response.body().getAsJsonObject().get("last_name");
-                    username.setText(first.toString());
+                    username.setText(first.getAsString());
 
                 } else {
                     Toast.makeText(MainActivity.this, "Not success", Toast.LENGTH_LONG).show();
